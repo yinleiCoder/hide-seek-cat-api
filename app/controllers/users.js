@@ -15,6 +15,10 @@ class UsersController {
         ctx.body = db[ctx.params.id * 1];
     }
     create(ctx) {
+        ctx.verifyParams({
+            name: {type: 'string'},
+            age: {type: 'number'}
+        });
         db.push(ctx.request.body);
         ctx.body = db;
     }
