@@ -1,0 +1,20 @@
+{
+  "name": "hide-seek-cat-api",
+  "version": "1.0.0",
+  "description": "hide seek cat koa restful api.",
+  "main": "index.js",
+  "repository": "git@github.com:yinleiCoder/hide-seek-cat-api.git",
+  "author": "YinLei <1099129793@qq.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon app/index.js"
+  },
+  "dependencies": {
+    "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^10.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
