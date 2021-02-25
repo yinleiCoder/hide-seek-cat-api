@@ -15,7 +15,7 @@ const { connectionStr } = require('./config');
 const mongoose = require('mongoose');
 mongoose.connect(connectionStr, {useNewUrlParser: true}, () => console.log('躲猫猫MongoDB连接成功!!!'));
 mongoose.connection.on('error', console.error);
-
+mongoose.set('useFindAndModify', false);
 
 /// 错误处理: 处理错误、生产环境下禁用错误堆栈的返回
 app.use(error({
