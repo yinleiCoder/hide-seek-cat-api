@@ -10,6 +10,12 @@ const routing = require('./routes');
 const error = require('koa-json-error');
 const parameter = require('koa-parameter');
 
+/// MongoDB.
+const { connectionStr } = require('./config');
+const mongoose = require('mongoose');
+mongoose.connect(connectionStr, {useNewUrlParser: true}, () => console.log('躲猫猫MongoDB连接成功!!!'));
+mongoose.connection.on('error', console.error);
+
 
 /// 错误处理: 处理错误、生产环境下禁用错误堆栈的返回
 app.use(error({

@@ -10,6 +10,7 @@
 - Npm: v6.14.11
 - 接口测试工具：POSTMAN
 - Koa
+- 数据库：MongoDB
 
 ## Code说明
 
