@@ -9,6 +9,9 @@ class UsersController {
         ctx.body = db;
     }
     findById(ctx) {
+        if(ctx.params.id * 1 >= db.length) {
+            ctx.throw(412, '先决条件失败：id >= 数组长度.');
+        }
         ctx.body = db[ctx.params.id * 1];
     }
     create(ctx) {
