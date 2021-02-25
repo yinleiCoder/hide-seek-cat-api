@@ -92,5 +92,48 @@ class UsersController {
         ctx.body = { token };
     }
 
+    /// 获取自己的粉丝
+    async listFollowers(ctx) {
+        const users = await User.find({following: ctx.params.id});
+        ctx.body = users;
+    }
+
+    /// 获取自己关注人列表
+    async listFollowing(ctx) {
+        const user = await User.findById(ctx.params.id).select('+following').populate('following');
+        if(!user){
+            ctx.throw(404, '未关注任何人');
+        }
+        ctx.body = user.following;
+    }
+
+    /// 检验用户存在与否 中间件
+    async checkUserExist(ctx, next) {
+        const user = await User.findById(ctx.params.id);
+        if(!user){
+            ctx.throw(404, '该用户不存在');
+        }
+        await next();
+    }
+
+    async follow(ctx) {
+        const me = await User.findById(ctx.state.user._id).select('+following');
+        if(!me.following.map(id => id.toString()).includes(ctx.params.id)){
+            me.following.push(ctx.params.id);
+            me.save();
+        }
+        ctx.status = 204;
+    }
+
+    async unfollow(ctx) {
+        const me = await User.findById(ctx.state.user._id).select('+following');
+        const index = me.following.map(id => id.toString()).indexOf(ctx.params.id);
+        if(index > -1){
+            me.following.splice(index, 1);
+            me.save();
+        }
+        ctx.status = 204;
+    }
+
 }
 module.exports = new UsersController();

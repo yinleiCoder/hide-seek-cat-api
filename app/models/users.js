@@ -35,6 +35,11 @@ const userSchema = new Schema({
             graduation_year: { type: Number },
         }], 
         select: false
+    },
+    /// 关注. 粉丝数量太大了，故和User分离
+    following: {
+        type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+        select: false,
     }
 });
 
