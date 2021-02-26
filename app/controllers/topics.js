@@ -6,6 +6,8 @@
 const Topic = require('../models/topics');
 /// user model.
 const User = require('../models/users');
+/// post model.
+const Post = require('../models/posts');
 
 class TopicController {
 
@@ -58,6 +60,12 @@ class TopicController {
     async listTopicFollowers(ctx) {
         const users = await User.find({followingTopics: ctx.params.id});
         ctx.body = users;
+    }
+
+    /// 某话题下的帖子列表
+    async listPosts(ctx) {
+        const posts = await Post.find({ topics: ctx.params.id });
+        ctx.body = posts;
     }
 
 }

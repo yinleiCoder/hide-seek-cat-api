@@ -4,6 +4,8 @@
  */
 /// user model.
 const User = require('../models/users');
+/// post model.
+const Post = require('../models/posts');
 
 /// json web token.
 const jsonwebtoken = require('jsonwebtoken');
@@ -176,6 +178,15 @@ class UsersController {
             me.save();
         }
         ctx.status = 204;
+    }
+
+    /// 帖子列表
+    async listPosts(ctx) {
+        const posts = await Post.find({poster: ctx.params.id});
+        if(!posts){
+            ctx.throw(404, '该用户未发表帖子');
+        }
+        ctx.body = posts;
     }
 
 }

@@ -12,6 +12,7 @@ const {
     update, 
     listTopicFollowers,
     checkTopicExist,
+    listPosts,
 } = require('../controllers/topics');
 
 /// 认证jwt
@@ -23,5 +24,6 @@ router.post('/', auth, create);
 router.get('/:id', checkTopicExist, findById);
 router.patch('/:id', auth, checkTopicExist,  update);
 router.get('/:id/followers', checkTopicExist, listTopicFollowers);
+router.get('/:id/posts', checkTopicExist, listPosts);
 
 module.exports = router;
