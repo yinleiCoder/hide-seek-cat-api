@@ -28,8 +28,12 @@
 - 一对多关系
 - 多对多关系
 - 帖子——> 答案(赞、踩、收藏)——>评论
-- 
+
+### 本项目开源，接口文档请访问：
+
+https://documenter.getpostman.com/view/7233178/TWDcFZof
 
 ## License
 
 **躲猫猫** is MIT licensed.
+
