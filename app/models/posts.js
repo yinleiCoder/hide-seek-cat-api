@@ -20,6 +20,6 @@ const postSchema = new Schema({
         type: [{ type: Schema.Types.ObjectId, ref: 'Topic' }],
         select: false,
     }
-});
+},{timestamps: true});
 
 module.exports = model('Post', postSchema);

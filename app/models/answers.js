@@ -21,6 +21,6 @@ const answerSchema = new Schema({
     postId: { type: String, required: true },
     /// 投票数
     voteCount: { type: Number, required: true, default: 0 },
-});
+}, {timestamps: true});
 
 module.exports = model('Answer', answerSchema);
