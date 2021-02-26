@@ -22,11 +22,23 @@ const {
     unfollowTopic, 
     listFollowingTopics,
     listPosts,
+    listLikingAnswers,
+    listDisLikingAnswers,
+    likeAnswer,
+    dislikeAnswer,
+    unlikeAnswer,
+    undislikeAnswer,
+    listCollectingAnswers,
+    collectAnswer,
+    uncollectAnswer,
 } = require('../controllers/users');
 
 const {
     checkTopicExist,
 } = require('../controllers/topics');
+const {
+    checkanswerExist,
+} = require('../controllers/answers');
 
 /// 认证jwt
 const { secret } = require('../config');
@@ -52,5 +64,15 @@ router.delete('/followingTopics/:id', auth, checkTopicExist,unfollowTopic);
 
 router.get('/:id/posts', listPosts);
 
+router.get('/:id/likingAnswers', listLikingAnswers);
+router.put('/likingAnswers/:id', auth, checkanswerExist, likeAnswer, undislikeAnswer);
+router.delete('/likingAnswers/:id', auth, checkanswerExist,unlikeAnswer);
+router.get('/:id/dislikingAnswers', listDisLikingAnswers);
+router.put('/dislikingAnswers/:id', auth, checkanswerExist, dislikeAnswer, unlikeAnswer);
+router.delete('/dislikingAnswers/:id', auth, checkanswerExist,undislikeAnswer);
+
+router.get('/:id/collectingAnswers', listCollectingAnswers);
+router.put('/collectingAnswers/:id', auth, checkanswerExist, collectAnswer);
+router.delete('/collectingAnswers/:id', auth, uncollectAnswer);
 
 module.exports = router;
