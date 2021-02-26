@@ -2,8 +2,10 @@
  * 话题 控制器
  * @author yinlei
  */
-/// user model.
+/// topic model.
 const Topic = require('../models/topics');
+/// user model.
+const User = require('../models/users');
 
 class TopicController {
 
@@ -15,6 +17,14 @@ class TopicController {
         ctx.body = await Topic
             .find({name: new RegExp(ctx.query.q)})
             .limit(perPage).skip(page * perPage);
+    }
+
+    async checkTopicExist(ctx, next) {
+        const topic = await Topic.findById(ctx.params.id);
+        if(!topic){
+            ctx.throw(404, '该话题不存在');
+        }
+        await next();
     }
 
     async findById(ctx) {
@@ -42,6 +52,12 @@ class TopicController {
         });
         const topic = await Topic.findByIdAndUpdate(ctx.params.id, ctx.request.body);
         ctx.body = topic;
+    }
+
+    /// 获取该话题下的关注者
+    async listTopicFollowers(ctx) {
+        const users = await User.find({followingTopics: ctx.params.id});
+        ctx.body = users;
     }
 
 }
