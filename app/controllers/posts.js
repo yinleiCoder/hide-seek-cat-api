@@ -15,7 +15,7 @@ class PostController {
         const q = new RegExp(ctx.query.q);
         ctx.body = await Post
             .find({ $or: [{title: q}, {description: q}] })
-            .limit(perPage).skip(page * perPage);
+            .sort({'createdAt': -1}).limit(perPage).skip(page * perPage).populate('poster topics');
     }
 
     async checkPostExist(ctx, next) {

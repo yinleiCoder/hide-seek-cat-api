@@ -108,7 +108,7 @@ class UsersController {
         const token = jsonwebtoken.sign({ _id, name }, secret, {
             expiresIn: '1d'
         });
-        ctx.body = { token };
+        ctx.body = { token, uid: _id};
     }
 
     /// 获取自己的粉丝

@@ -14,9 +14,9 @@ const userSchema = new Schema({
     __v: { type: Number, select: false },
     name: { type: String, required: true },
     password: { type: String, required: true, select: false },
-    avatar_url: { type: String },
+    avatar_url: { type: String, default: 'https://img.zcool.cn/community/019e006054343f11013e87f440a8b8.jpg@3000w_1l_0o_100sh.jpg' },
     gender: { type: String, enum: ['male', 'female'], default: 'male', required: true },
-    headline: { type: String },
+    headline: { type: String, default: '添加一句话介绍自己吧！' },
     locations: { type: [{ type: Schema.Types.ObjectId, ref: 'Topic' }], select: false },
     business: { type: Schema.Types.ObjectId, ref: 'Topic', select: false },
     employments: {
@@ -41,6 +41,7 @@ const userSchema = new Schema({
         type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
         select: false,
     },
+    /// 关注话题
     followingTopics: {
         type: [{ type: Schema.Types.ObjectId, ref: 'Topic' }],
         select: false,
