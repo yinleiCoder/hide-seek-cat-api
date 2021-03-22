@@ -49,12 +49,12 @@ class UsersController {
             name: {type: 'string'},
             password: {type: 'string'},
         });
-        const { name } = ctx.request.body;
+        const { name, password } = ctx.request.body;
         const repeatedUser = await User.findOne({ name });
         if(repeatedUser){
             ctx.throw(409, '用户已经存在');
         }
-        const user = await new User(ctx.request.body).save();
+        const user = await new User({name, password}).save();
         ctx.body = user;
     }
 
