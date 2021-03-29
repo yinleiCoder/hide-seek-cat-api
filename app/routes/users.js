@@ -31,6 +31,12 @@ const {
     listCollectingAnswers,
     collectAnswer,
     uncollectAnswer,
+    addFriend,
+    agreeFriendReq,
+    listMyFriends,
+    listMyFriendsAndMessages,
+    sendOneMessage,
+    listMessagesWithSomeone,
 } = require('../controllers/users');
 
 const {
@@ -74,5 +80,12 @@ router.delete('/dislikingAnswers/:id', auth, checkanswerExist,undislikeAnswer);
 router.get('/:id/collectingAnswers', listCollectingAnswers);
 router.put('/collectingAnswers/:id', auth, checkanswerExist, collectAnswer);
 router.delete('/collectingAnswers/:id', auth, uncollectAnswer);
+
+router.get('/:id/allFriends',listMyFriends);
+router.get('/:id/allfriendsandmessages', listMyFriendsAndMessages);
+router.get('/:id/allmessageswithSomeone/:fid', listMessagesWithSomeone);
+router.post('/addFriend/:id', auth, addFriend);
+router.post('/sendOneMessage/:id', auth, sendOneMessage);
+router.put('/agreeFriendReq/:id', auth, agreeFriendReq);
 
 module.exports = router;

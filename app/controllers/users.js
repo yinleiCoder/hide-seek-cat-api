@@ -4,10 +4,14 @@
  */
 /// user model.
 const User = require('../models/users');
+/// friend model.
+const Friend = require('../models/friends');
 /// post model.
 const Post = require('../models/posts');
 /// answer model.
 const Answer = require('../models/answers');
+/// message model.
+const Message = require('../models/messages');
 
 /// json web token.
 const jsonwebtoken = require('jsonwebtoken');
@@ -279,7 +283,94 @@ class UsersController {
         }
         ctx.status = 204;
     }
+
+    /// 添加对方为好友
+    async addFriend(ctx) {
+        const result = await Friend.findOne({
+            uid: ctx.state.user._id,
+        });
+        if(result && result.state == 2) {
+            ctx.throw(409, '已申请对方为好友，重复申请无效');
+        }
+        await Friend.insertMany([
+            {
+                uid: ctx.state.user._id,
+                fid: ctx.params.id,
+                state: 2,
+            },
+            {
+                uid: ctx.params.id,
+                fid: ctx.state.user._id,
+                state: 1,
+            }
+        ]);
+        ctx.status = 204;
+    }
+
+    /// 同意申请
+    async agreeFriendReq(ctx) {
+        await Friend.updateMany({
+            $or: [
+                {uid: ctx.state.user._id,fid: ctx.params.id,},
+                {uid: ctx.params.id,fid: ctx.state.user._id,},
+            ]
+        }, {
+            $set: {
+                state: 0,
+            }
+        });
+        
+        await Message.insertMany([
+            {
+                from: ctx.state.user._id,
+                to: ctx.params.id,
+                content: '我们已经成为好友啦！',
+                type: 0,
+                state: 1,
+            },
+            {
+                from: ctx.params.id,
+                to: ctx.state.user._id,
+                content: '我们已经成为好友啦！',
+                type: 0,
+                state: 1,
+            }
+        ]);
+        ctx.status = 204;
+    }
+
+    /// 查找我的全部好友
+    async listMyFriends(ctx) {
+        ctx.body = await Friend
+            .find({uid: ctx.params.id}).populate('uid fid');
+    }
+
+    /// 查找我的全部好友和其最新消息
+    async listMyFriendsAndMessages(ctx) {
+        const friends = await Friend.find({uid: ctx.params.id}).populate('fid');
+        let result = [];
+        for (const friend of friends){
+            result.push(await Message.findOne({$or: [
+                {from: friend.fid._id},
+            ]}).populate('from to'));
+        }
+        ctx.body = result;
+    }
+     /// 查找和某人具体的聊天记录
+    async listMessagesWithSomeone(ctx) {
+        const { per_page = 10 } = ctx.query;
+        const page = Math.max(ctx.query.page * 1, 1) - 1;
+        const perPage = Math.max(per_page * 1, 1);
+        const q = new RegExp(ctx.query.q);
+        ctx.body = await Message
+            .find({ $or: [{from: ctx.params.fid, to: ctx.params.id, content: q},{ from: ctx.params.id, to: ctx.params.fid, content: q} ] }).sort({'createdAt': -1})
+            .limit(perPage).skip(page * perPage).populate('from to');
+    }
     
+    /// 向好友发送一条消息[暂时不打算做，客户端自己存储消息记录就可以了]
+    async sendOneMessage(ctx) {
+        ctx.status = 204;
+    }
 
 }
 module.exports = new UsersController();
