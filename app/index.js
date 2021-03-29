@@ -41,4 +41,10 @@ app.use(parameter(app));
 routing(app);
 
 const PORT = 3000;
-app.listen(PORT, () => console.log(`躲猫猫 RESTful API 启动端口: ${PORT}`));
+// app.listen(PORT, () => console.log(`躲猫猫 RESTful API 启动端口: ${PORT}`));
+
+const httpServer = require('http').createServer(app.callback());
+const options = {};
+const io = require('socket.io')(httpServer, options);
+require('./socketio')(io);
+httpServer.listen(PORT);
