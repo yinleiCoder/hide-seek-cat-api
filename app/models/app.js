@@ -14,6 +14,7 @@ const appSchema = new Schema({
     architecture: { type: String },
     model: { type: String },
     shopUrl: { type: String },
+    banner: { type: String, default: 'https://img.zcool.cn/community/013d205cdd458da801208f8bf3bdda.jpg@2o.jpg' },
     fileUrl: { type: String },
     latestVersion: { type: String },
     latestDescription: { type: String },

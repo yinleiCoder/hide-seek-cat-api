@@ -18,6 +18,7 @@ class TopicController {
         const perPage = Math.max(per_page * 1, 1);
         ctx.body = await Topic
             .find({name: new RegExp(ctx.query.q)})
+            .sort({'createdAt': -1})
             .limit(perPage).skip(page * perPage);
     }
 

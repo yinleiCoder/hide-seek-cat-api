@@ -23,6 +23,7 @@ class AppController {
             architecture,
             model,
             shopUrl: '暂未上传到APP应用商店',
+            banner: 'https://img.zcool.cn/community/013d205cdd458da801208f8bf3bdda.jpg@2o.jpg',
             //https://giligili-yinlei.oss-cn-shanghai.aliyuncs.com/flutter/app-armeabi-v7a-release.apk
             fileUrl: 'https://giligili-yinlei.oss-cn-shanghai.aliyuncs.com/flutter/app-x86_64-release.apk',
             latestVersion: 'v0.9.0-alpha',
