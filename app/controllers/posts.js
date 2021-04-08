@@ -4,7 +4,8 @@
  */
 /// post model.
 const Post = require('../models/posts');
-
+const path = require('path');
+const fs = require('fs');
 class PostController {
 
     /// 分页
@@ -38,8 +39,17 @@ class PostController {
         ctx.verifyParams({
             title: {type: 'string'},
             description: {type: 'string', required: false},
+            url: {type: 'string', required: false},
         });
-        const post = await new Post({...ctx.request.body, poster: ctx.state.user._id}).save();
+        const file = ctx.request.files.file; 
+        const basename = path.basename(file.path);
+        let stream =  fs.createReadStream(file.path);
+        let size = fs.statSync(file.path).size;
+        let {url} = await ctx.state.aliOss.putStream(`/flutter-cat/${basename}`,stream, {
+            contentLength: size,
+        });
+        let temp = {...ctx.request.body, url};
+        const post = await new Post({...temp, poster: ctx.state.user._id}).save();
         ctx.body = post;
     }
 

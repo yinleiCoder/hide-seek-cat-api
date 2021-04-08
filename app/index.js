@@ -12,6 +12,15 @@ const parameter = require('koa-parameter');
 const koaStatic = require('koa-static');
 const path = require('path');
 
+/// ali-oss
+let OSS = require('ali-oss');
+let aliOss = new OSS({
+    region: 'oss-cn-chengdu',
+    bucket: 'yinlei-hide-seek-cat',
+    accessKeyId: 'LTAI5tGJiHs12XBE7k8o5Syo',
+    accessKeySecret: 'T0SBUqJaVLG7PI4YUmoqhaEvnERPdl',
+});
+
 /// MongoDB.
 const { connectionStr } = require('./config');
 const mongoose = require('mongoose');
@@ -35,6 +44,11 @@ app.use(koaBody({
         keepExtensions: true,
     }
 }));
+/// ali-oss
+app.use(async (ctx, next) => {
+    ctx.state.aliOss = aliOss;
+    await next();
+});
 /// 校验请求体
 app.use(parameter(app));
 /// 批量注册routes

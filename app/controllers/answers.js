@@ -15,7 +15,7 @@ class AnswerController {
         const q = new RegExp(ctx.query.q);
         ctx.body = await Answer
             .find({ content: q, postId: ctx.params.postId })
-            .limit(perPage).skip(page * perPage);
+            .limit(perPage).skip(page * perPage).populate('answerer');
     }
 
     async checkanswerExist(ctx, next) {

@@ -65,7 +65,7 @@ class TopicController {
 
     /// 某话题下的帖子列表
     async listPosts(ctx) {
-        const posts = await Post.find({ topics: ctx.params.id });
+        const posts = await Post.find({ topics: ctx.params.id }).populate('poster topics');
         ctx.body = posts;
     }
 
