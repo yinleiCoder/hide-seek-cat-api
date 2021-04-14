@@ -13,7 +13,7 @@ class ZcoolController {
         if(keyword == '') {
             keyword = '少女'
         }
-        const response = await http.get(`/search/content.json?word=${encodeURI(keyword)}&cate=0&type=0&recommendLevel=0&time=0&hasVideo=0&city=0&college=0&sort=5&limit=24&column=4&sa=`);
+        const response = await http.get(`search/content.json?word=${encodeURI(keyword)}&cate=0&type=0&recommendLevel=0&time=0&hasVideo=0&city=0&college=0&sort=5&limit=20&column=4&page=1`);
         const {data} = response.data.data;
         /// 主要是拿到object下的id字段方便获取详情
         ctx.body = data.map(item => item.object).filter(user => user.cover != null);
